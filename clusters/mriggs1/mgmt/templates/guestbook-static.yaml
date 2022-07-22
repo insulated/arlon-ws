@@ -1,0 +1,21 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mriggs1-guestbook-static
+  namespace: argocd
+  finalizers:
+  # This solves issue #17
+  - resources-finalizer.argocd.argoproj.io/foreground
+spec:
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    name: mriggs1
+    namespace: default
+  project: default
+  source:
+    repoURL: https://github.com/insulated/arlon-ws.git
+    path: clusters/mriggs1/workload/guestbook-static
+    targetRevision: HEAD
