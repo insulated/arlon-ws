@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mriggs1-xenial-static
+  name: mriggs1-profile-dynamic-1
   namespace: argocd
   finalizers:
   # This solves issue #17
@@ -12,10 +12,16 @@ spec:
     automated:
       prune: true
   destination:
-    name: mriggs1
-    namespace: default
+    server: https://kubernetes.default.svc
+    namespace: argocd
   project: default
   source:
     repoURL: https://github.com/insulated/arlon-ws.git
-    path: clusters/mriggs1/workload/xenial-static
+    path: profiles/dynamic-1/mgmt
     targetRevision: HEAD
+    helm:
+      parameters:
+      - name: clusterName
+        value: mriggs1
+      - name: profileAppName
+        value: mriggs1-profile-dynamic-1
