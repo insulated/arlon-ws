@@ -1,0 +1,27 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubeadm1-profile-dynamic-1
+  namespace: argocd
+  finalizers:
+  # This solves issue #17
+  - resources-finalizer.argocd.argoproj.io/foreground
+spec:
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  project: default
+  source:
+    repoURL: https://github.com/insulated/arlon-ws.git
+    path: profiles/dynamic-1/mgmt
+    targetRevision: HEAD
+    helm:
+      parameters:
+      - name: clusterName
+        value: kubeadm1
+      - name: profileAppName
+        value: kubeadm1-profile-dynamic-1
